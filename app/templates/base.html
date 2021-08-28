@@ -1,0 +1,21 @@
+
+
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }}</title>
+      {% else %}
+      <title>Welcome to Currex</title>
+      {% endif %}
+    </head>
+    <body>
+	<div>
+    		Exchange your currency:
+    		<a href="/index">Home</a>
+    	<a href="/admin">Login</a>
+	<a href="{{ url_for('register') }}">Sign up</a>
+	</div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
