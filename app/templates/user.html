@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="featured-item" >
+                  {% if user.img_name %}
+                  <img src="{{ url_for('static', filename='assets/images/user_images/'+user.img_name) }}" style="height:100px;width:100px">
+		{% else %}
+		<img src="{{ url_for('static', filename='assets/images/user_images/default.png') }}" style="height:100px;width:100px">
+		{% endif %}
+	</div>
+	<form action="{{ url_for('edit_profile') }}" method="post" enctype="multipart/form-data" >
+		{{form.hidden_tag()}}
+    		<h1>User: {{ user.firstname }} {{user.lastname}}</h1>
+    		<h6> Currency : <input type = "text" name="default_currency" value = "{{user.default_currency}}"></h6>
+		<p><input type="file" name="file"></p>
+		<p>{{ form.submit() }}</p>
+	</form>
+{% endblock %}
