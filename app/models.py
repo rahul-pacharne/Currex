@@ -21,6 +21,14 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
+class Wallet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer,  db.ForeignKey('user.id'), index=True)
+    amount = db.Column(db.Numeric(precision=2, asdecimal=False, decimal_return_scale=None))
+
+    def __repr__(self):
+        return '<User {}>'.format(self.amount)
+
 
 @login.user_loader
 def load_user(id):

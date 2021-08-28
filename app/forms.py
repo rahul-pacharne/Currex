@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, DecimalField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
 
@@ -32,6 +32,11 @@ class LoginForm(FlaskForm):
 
 class ProfileForm(FlaskForm):
     default_currency = StringField('Default Currency', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class CreditForm(FlaskForm):
+    currency = StringField('Currency', validators=[DataRequired()])
+    amount =  DecimalField('Price',validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 
