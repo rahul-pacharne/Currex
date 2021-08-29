@@ -6,7 +6,7 @@
 		<div class="container-login100">
 			<div class="wrap-login100">
 					<span class="login100-form-title"> Sign In </span>
-					<form action="" method="post" class="login100-form validate-form p-l-55 p-r-55 p-t-178"novalidate>
+					<form action="" method="post" class="login100-form validate-form p-l-55 p-r-55 p-t-178" novalidate>
 					{{form.hidden_tag()}}
 						<div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
 							{{form.username.label}}<br>
@@ -23,8 +23,9 @@
 							{% endfor %}
 						</p>
 						<p>{{form.remember_me()}} {{form.remember_me.label}}</p>
-						<div class="container-login100-form-btn">{{ form.submit() }}</div>
+						<div class="container-login100-form-btn">{{ form.submit(class_="login100-form-btn") }}</div>
 					</form>
+</div> </div></div>
 					<div class="flex-col-c p-t-170 p-b-40">
 						<span class="txt1 p-b-9">
 							Don’t have an account?
