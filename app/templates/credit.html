@@ -3,7 +3,7 @@
 {% block content %}
 	<form action="" method="post"  >
 		{{form.hidden_tag()}}
-    		<select required name="currency" id="currency">
+    		<select class="textbox" required name="currency" id="currency">
                 <option value="">Choose Currency</option>
                 {% if from_c_name %}
                 <option value="{{from_c_code}}" selected>{{from_c_name}}</option>
@@ -165,14 +165,13 @@
                 <option value="ZMW">Zambian Kwacha</option>
                 <option value="ZWL">Zimbabwean Dollar</option>
             </select>
-		<p> Amount : 
+		<p> 
 			{{form.amount.label}}<br>
-			{{form.amount(size=32)}}<br>
+			{{form.amount(size=32,class_="textbox")}}<br>
 			{% for error in form.amount.errors %}
 		            <span style="color: red;">[{{ error }}]</span>
 		        {% endfor %}
 		</p>
-		<p>{{ form.submit() }}</p>
+		<p>{{ form.submit(class_="submitbutton") }}</p>
 	</form>
-	<a href="{{ url_for('wallet') }}">My Wallet</a>
 {% endblock %}

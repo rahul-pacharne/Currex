@@ -5,19 +5,18 @@
 		{{form.hidden_tag()}}
     		<p> Transfer to : 
 			{{form.username.label}}<br>
-			{{form.username(size=32)}}<br>
+			{{form.username(size=32,class_="textbox")}}<br>
 			{% for error in form.amount.errors %}
 		            <span style="color: red;">[{{ error }}]</span>
 		        {% endfor %}
 		</p>
 		<p> Amount : 
 			{{form.amount.label}}<br>
-			{{form.amount(size=32)}}<br>
+			{{form.amount(size=32,class_="textbox")}}<br>
 			{% for error in form.amount.errors %}
 		            <span style="color: red;">[{{ error }}]</span>
 		        {% endfor %}
 		</p>
-		<p>{{ form.submit() }}</p>
+		<p>{{ form.submit(class_="submitbutton") }}</p>
 	</form>
-	<a href="{{ url_for('wallet') }}">My Wallet</a>
 {% endblock %}
