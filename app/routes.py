@@ -68,7 +68,24 @@ def edit_profile():
         if uploaded_file.filename != '':
             uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], uploaded_file.filename))
             current_user.img_name = uploaded_file.filename
+        from_c = current_user.default_currency
         current_user.default_currency = form.default_currency.data
+        wallet = Wallet.query.filter_by(user_id=current_user.id).first()
+        if(wallet):
+            amount = wallet.amount
+            amount = float(amount)
+            
+            to_c = form.default_currency.data
+            url = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={}&to_currency={}&apikey={}'.format(from_c,to_c,API_KEY)
+            
+            # make the GET request to 'www.alphavantage.co' api service and then store the Response to 'response' variable
+            response = requests.get(url=url).json()
+
+            # calculating the amount according to the Currency Exchange Rate and store the value to 'result' variable 
+            rate = response['Realtime Currency Exchange Rate']['5. Exchange Rate']
+            rate = float(rate)
+            result = rate * amount
+            wallet.amount = result
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('user'))
@@ -168,7 +185,7 @@ def transfer():
             print("Conversion rate is:")
             print(rate)
             result = rate * amount
-            wallet.amount = wallet.amount - result
+            wallet.amount = wallet.amount - amount
             db.session.flush()
             if(to_user_wallet):
                 to_user_wallet.amount = to_user_wallet.amount + result
