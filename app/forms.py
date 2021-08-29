@@ -39,4 +39,9 @@ class CreditForm(FlaskForm):
     amount =  DecimalField('Price',validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+class TransferForm(FlaskForm):
+    username = StringField('Username',validators=[DataRequired()])
+    amount =  DecimalField('Amount',validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
 

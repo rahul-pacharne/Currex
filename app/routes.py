@@ -7,7 +7,7 @@ from flask import request
 from werkzeug.urls import url_parse
 from app import db
 from app.forms import RegistrationForm
-from app.forms import LoginForm, ProfileForm, CreditForm
+from app.forms import LoginForm, ProfileForm, CreditForm, TransferForm
 import os
 from os.path import join, dirname, realpath
 import requests
@@ -142,17 +142,49 @@ def debit():
 
 @app.route('/transfer', methods=['GET', 'POST'])
 def transfer():
-    form = CreditForm()
+    form = TransferForm()
+    print("hello")
     if form.validate_on_submit():
+        print("there")
         wallet = Wallet.query.filter_by(user_id=current_user.id).first()
+        to_user = User.query.filter_by(username=form.username.data).first()
+        print(to_user)
+        to_user_wallet = Wallet.query.filter_by(user_id=to_user.id).first()
         if(wallet):
-            wallet.amount = wallet.amount+int(form.amount.data)
-        
-        else:
-            wallet = Wallet(user_id = current_user.id,amount = amount )
-            db.session.add(cart)
+            print("here I am in if1")
+            amount = form.amount.data
+            amount = float(amount)
+            from_c = current_user.default_currency
+            to_c = to_user.default_currency
+            print("here I am in if")
+            url = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={}&to_currency={}&apikey={}'.format(from_c,to_c,API_KEY)
+            
+            # make the GET request to 'www.alphavantage.co' api service and then store the Response to 'response' variable
+            response = requests.get(url=url).json()
+
+            # calculating the amount according to the Currency Exchange Rate and store the value to 'result' variable 
+            rate = response['Realtime Currency Exchange Rate']['5. Exchange Rate']
+            rate = float(rate)
+            print("Conversion rate is:")
+            print(rate)
+            result = rate * amount
+            wallet.amount = wallet.amount - result
+            db.session.flush()
+            if(to_user_wallet):
+                to_user_wallet.amount = to_user_wallet.amount + result
+                print("here updated")
+                print(to_user_wallet)
+            else:
+                to_user_wallet = Wallet(user_id = to_user.id,amount = result )
+                db.session.add(to_user_wallet)
+                print("here added")
+            
         db.session.commit()
         flash('Congratulations, you added amount!')
         return redirect(url_for('wallet'))
     else:
-        return render_template('credit.html', title='Credit amount', form=form)
+        return render_template('transfer.html', title='Credit amount', form=form)
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))  
