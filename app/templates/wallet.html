@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<p> Wallet balance : {{ wallet.amount }} <p>
+<a class = "linkbutton" href='{{url_for('credit')}}'> Credit amount</a>
+<a class = "linkbutton" href='{{url_for('debit')}}'> Debit amount</a>
+<a class = "linkbutton" href='{{url_for('transfer')}}'> Transfer amount</a>
+{% endblock %}
